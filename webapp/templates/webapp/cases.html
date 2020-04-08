@@ -1,0 +1,124 @@
+{% extends 'webapp/base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+ <div class="row">
+  <div class="col-md-1 col-xs-1 col-sm-1"></div>
+   <div  class="col-md-10 col-xs-10 col-sm-10">
+    <h3 class="round3" style="text-align:center;">Cases</h3>
+  </div>
+  <div class="col-md-1 col-xs-1 col-sm-1"></div>
+ </div>
+ <br/>
+    {% if cases %}
+ {% for case in cases %}
+  <div class="row">
+   <div class="col-md-1 col-xs-1 col-sm-1"></div>
+   <div class="col-md-7 col-xs-7 col-sm-7">
+    <ul class="list-group">
+       <li class="list-group-item ">
+     <a href="">{{case.caseNumber}}</a>
+               <p class="bq-title">{{case.caseSubject}}</p>
+               <p>{{case.caseDescription}}</p>
+            <select  class="selectpicker" disabled="true">
+                 {% if modules_acct %}
+                     <optgroup label= 'ACCT'>
+                         {% for key in modules_acct %}
+                            <option {% if case.caseModule == key %}selected {% endif %}>{{key}}
+                            </option>
+                         {% endfor %}
+                     </optgroup>
+                {% endif %}
+                 {% if modules_arch %}
+                     <optgroup label= 'ARCH'>
+                         {% for key in modules_arch %}
+                             <option
+                                     {% if case.caseModule == key %}selected {% endif %}>{{key}}
+                            </option>
+                         {% endfor %}
+                     </optgroup>
+                {% endif %}
+                 {% if modules_bo %}
+                     <optgroup label= 'BO'>
+                         {% for key in modules_bo %}
+                            <option
+                                     {% if case.caseModule == key %}selected {% endif %}>{{key}}
+                            </option>
+                         {% endfor %}
+                     </optgroup>
+                {% endif %}
+                 {% if modules_fo %}
+                     <optgroup label= 'FO'>
+                         {% for key in modules_fo %}
+                            <option
+                                     {% if case.caseModule == key %}selected {% endif %}>{{key}}
+                            </option>
+                         {% endfor %}
+                     </optgroup>
+                {% endif %}
+                {% if modules_risk %}
+                     <optgroup label= 'RISK'>
+                         {% for key in modules_risk %}
+                             <option
+                                     {% if case.caseModule == key %}selected{% endif %}>{{key}}
+                            </option>
+                         {% endfor %}
+                     </optgroup>
+                {% endif %}
+            </select>
+       </li>
+     </ul>
+    <br>
+   </div>
+   <div class="col-md-1 col-xs-1 col-sm-1">
+    <a href="{% url 'casedetail' case.caseID %}">
+     <button type="button" class="btn btn-info">
+      <span class="glyphicon glyphicon-open"></span>
+     </button>
+    </a>
+   </div>
+
+      <div class="col-md-1">
+    <a href="{% url 'casedetail' case.caseID %}">
+     <button type="button" class="btn btn-info">
+      <span class="glyphicon glyphicon-pencil"></span>
+     </button>
+    </a>
+   </div>
+            <div class="col-md-1">
+     <a href="{% url 'casedetail' case.caseID %}">
+     <button type="button" class="btn btn-info">
+      <span class="glyphicon glyphicon-trash"></span>
+     </button>
+    </a>
+   </div>
+
+  <div class="col-md-1 col-xs-1 col-sm-1"></div>
+  </div>
+ {% endfor %}
+    {% endif %}
+</div>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+{% endblock %}
